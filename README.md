@@ -12,7 +12,7 @@ It contains 4 mandatory parameters:
 
 There are 2 actions available:
 - createForNewApplication:
-  - creates an application profile and initializes it with a list of sandboxes </br>
+  - Creates an application profile and initializes it with a list of sandboxes </br>
   Parameters:
     - Application Name* - name of the application profile:
       - --application_name or -an
@@ -31,7 +31,7 @@ There are 2 actions available:
 
 
 - createForAllApplications:
-  - creates a list of sandboxes in all application profiles (can ignore selected profiles)</br>
+  - Creates a list of sandboxes in all application profiles (can ignore selected profiles)</br>
    Parameters:
     - Applications not to modify - comma-delimited list of application profiles to ignore:
       - --exceptions or -e
