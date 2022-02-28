@@ -1,5 +1,7 @@
 package util.executionparameters;
 
+import util.Logger;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -13,6 +15,7 @@ public final class ParameterParser {
             if (argument.charAt(0) == '-') {
                 currentParameter = argument.toLowerCase(Locale.ROOT);
             } else {
+                Logger.log("Reading Parameter: " + currentParameter + " with value " + argument);
                 parsedParameters.put(currentParameter, argument);
             }
         }

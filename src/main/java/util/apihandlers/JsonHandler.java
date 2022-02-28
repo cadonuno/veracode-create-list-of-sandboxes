@@ -3,6 +3,7 @@ package util.apihandlers;
 import org.apache.sling.commons.json.JSONArray;
 import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.JSONObject;
+import util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +46,17 @@ public class JsonHandler {
         return !Optional.of(applicationNode)
                 .flatMap(JsonHandler::getProfileNode)
                 .flatMap(JsonHandler::getApplicationName)
-                .map(applicationsNotToModify::contains)
+                .map(foundApplication -> isIgnoredApplication(foundApplication, applicationsNotToModify))
                 .orElse(false);
     }
+
+    private static boolean isIgnoredApplication(String foundApplication, List<String> applicationsNotToModify) {
+        boolean shouldIgnore = applicationsNotToModify.contains(foundApplication);
+        Logger.log("Found Application Profile: " + foundApplication + "\n" +
+                (shouldIgnore ? "It is ignored and will not be modified" : "It will be modified"));
+        return shouldIgnore;
+    }
+
 
     private static Optional<String> getApplicationName(JSONObject profileNode) {
         return tryGetElementAsString(profileNode, "name");

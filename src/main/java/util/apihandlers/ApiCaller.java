@@ -3,6 +3,7 @@ package util.apihandlers;
 import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.JSONObject;
 import util.HmacRequestSigner;
+import util.Logger;
 import util.executionparameters.ApiCredentials;
 import util.executionparameters.CreateForAllApplicationsExecutionParameters;
 import util.executionparameters.CreateForNewApplicationExecutionParameters;
@@ -36,6 +37,7 @@ public class ApiCaller {
     }
 
     private static void createForNewApplication(CreateForNewApplicationExecutionParameters executionParameters) {
+        Logger.log("Creating Application Profile");
         runApi(APPLICATIONS_API_URL, POST_REQUEST,
                 buildNewApplicationProfileJsonOutput(executionParameters), executionParameters.getApiCredentials())
                 .flatMap(JsonHandler::getGuidNodeValue)
@@ -125,18 +127,23 @@ public class ApiCaller {
     }
 
     private static void createForAllApps(CreateForAllApplicationsExecutionParameters executionParameters) {
+        Logger.log("Obtaining list of application profiles");
         List<String> applicationsToModify = getAllApplicationProfiles(executionParameters.getApplicationsNotToModify(),
                 executionParameters.getApiCredentials());
+        Logger.log("Starting to create Sandboxes for " + applicationsToModify.size() + " applications");
         for (String applicationProfileId : applicationsToModify) {
             createSandboxes(executionParameters.getApiCredentials(), applicationProfileId,
                     executionParameters.getSandboxNames());
         }
+        Logger.log("Finished creating Sandboxes for " + applicationsToModify.size() + " applications");
     }
 
-    private static void createSandboxes(ApiCredentials apiCredentials, String applicationProfileId, List<String> sandboxNames) {
+    private static void createSandboxes(ApiCredentials apiCredentials, String applicationProfileGuid, List<String> sandboxNames) {
+        Logger.log("Starting to create Sandboxes for application " + applicationProfileGuid);
         sandboxNames.forEach(sandboxName ->
-                runApi(APPLICATIONS_API_URL + applicationProfileId + SANDBOX_API_URL_SUFFIX, POST_REQUEST,
+                runApi(APPLICATIONS_API_URL + applicationProfileGuid + SANDBOX_API_URL_SUFFIX, POST_REQUEST,
                         buildNewSandboxJsonOutput(sandboxName), apiCredentials));
+        Logger.log("Finished creating Sandboxes for application " + applicationProfileGuid);
     }
 
     private static String buildNewSandboxJsonOutput(String sandboxName) {
@@ -178,7 +185,7 @@ public class ApiCaller {
             }
         } catch (InvalidKeyException | NoSuchAlgorithmException | IllegalStateException
                 | IOException | JSONException e) {
-            e.printStackTrace();
+            Logger.log("Unable to run API at: " + apiUrl + "\nWith parameters: " + jsonParameters);
         }
         return Optional.empty();
     }

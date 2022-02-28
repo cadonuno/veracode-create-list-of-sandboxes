@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="VeracodeAPIsCaller" />
         <module name="APIs-demo" />
+        <module name="veracode-create-list-of-sandboxes" />
       </profile>
     </annotationProcessing>
   </component>

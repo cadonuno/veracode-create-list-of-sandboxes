@@ -1,5 +1,7 @@
 package util.executionparameters;
 
+import util.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +19,7 @@ public abstract class ExecutionParameters {
     }
 
     public static Optional<ExecutionParameters> of(String[] commandLineArguments) {
+        Logger.log("Parsing Execution Parameters");
         ParameterParser parameterParser = new ParameterParser(commandLineArguments);
         String actionName = parameterParser.getParameterAsString("--action", "-a");
         if (actionName == null) {
