@@ -111,13 +111,13 @@ public class ApiCaller {
     }
 
     private static String buildBusinessUnityField(CreateForNewApplicationExecutionParameters executionParameters) {
-        if (isNullOrEmpty(executionParameters.getBusinessUnity())) {
+        if (isNullOrEmpty(executionParameters.getBusinessUnit())) {
             return "";
         }
         return "\t\t\"business_unit\": [\n" +
                 "\t\t{\n" +
                 getParameterAsJsonString(
-                "guid", executionParameters.getBusinessUnity(), 3, true) +
+                "guid", executionParameters.getBusinessUnit(), 3, true) +
                 "\t\t}\n" +
                 "\t\t],";
     }

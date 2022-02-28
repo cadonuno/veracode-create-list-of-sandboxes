@@ -7,6 +7,7 @@ import util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public class JsonHandler {
@@ -51,7 +52,7 @@ public class JsonHandler {
     }
 
     private static boolean isIgnoredApplication(String foundApplication, List<String> applicationsNotToModify) {
-        boolean shouldIgnore = applicationsNotToModify.contains(foundApplication);
+        boolean shouldIgnore = applicationsNotToModify.contains(foundApplication.toLowerCase(Locale.ROOT));
         Logger.log("Found Application Profile: " + foundApplication + "\n" +
                 (shouldIgnore ? "It is ignored and will not be modified" : "It will be modified"));
         return shouldIgnore;

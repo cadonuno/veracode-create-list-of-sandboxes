@@ -6,20 +6,20 @@ public class CreateForNewApplicationExecutionParameters extends ExecutionParamet
     private final String applicationName;
     private final String businessCriticality;
     private final String description;
-    private final String businessUnity;
+    private final String businessUnit;
     private final String businessOwner;
     private final String businessOwnerEmail;
     private final String teams;
 
     protected CreateForNewApplicationExecutionParameters(ApiCredentials apiCredentials, List<String> sandboxNames,
                                                          String applicationName, String businessCriticality,
-                                                         String description, String businessUnity,
+                                                         String description, String businessUnit,
                                                          String businessOwner, String businessOwnerEmail, String teams) {
         super(apiCredentials, sandboxNames);
         this.applicationName = applicationName;
         this.businessCriticality = businessCriticality;
         this.description = description;
-        this.businessUnity = businessUnity;
+        this.businessUnit = businessUnit;
         this.businessOwner = businessOwner;
         this.businessOwnerEmail = businessOwnerEmail;
         this.teams = teams;
@@ -47,8 +47,8 @@ public class CreateForNewApplicationExecutionParameters extends ExecutionParamet
         return businessOwner;
     }
 
-    public String getBusinessUnity() {
-        return businessUnity;
+    public String getBusinessUnit() {
+        return businessUnit;
     }
 
     public String getDescription() {

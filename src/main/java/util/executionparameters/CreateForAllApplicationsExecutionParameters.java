@@ -1,7 +1,9 @@
 package util.executionparameters;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CreateForAllApplicationsExecutionParameters extends ExecutionParameters {
     private final List<String> applicationsNotToModify;
@@ -10,7 +12,14 @@ public class CreateForAllApplicationsExecutionParameters extends ExecutionParame
                                                           List<String> sandboxNames,
                                                           List<String> applicationsNotToModify) {
         super(apiCredentials, sandboxNames);
-        this.applicationsNotToModify = new ArrayList<>(applicationsNotToModify);
+        if (applicationsNotToModify != null) {
+            this.applicationsNotToModify = applicationsNotToModify
+                    .stream()
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toList());
+        } else {
+            this.applicationsNotToModify = Collections.emptyList();
+        }
     }
 
     public List<String> getApplicationsNotToModify() {
