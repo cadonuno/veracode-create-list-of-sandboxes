@@ -8,12 +8,14 @@ import java.util.Optional;
 
 public abstract class ExecutionParameters {
     private final ApiCredentials apiCredentials;
+    private final PlatformInstanceEnum platformInstance;
     private final List<String> sandboxNames;
 
     protected ExecutionParameters(ApiCredentials apiCredentials, List<String> sandboxNames) {
         if (sandboxNames == null || sandboxNames.isEmpty()) {
             throw new IllegalArgumentException("Sandbox Names argument is mandatory (--sandbox_names, -sn)");
         }
+        this.platformInstance = apiCredentials.getPlatformInstance();
         this.apiCredentials = apiCredentials;
         this.sandboxNames = new ArrayList<>(sandboxNames);
     }
@@ -68,5 +70,9 @@ public abstract class ExecutionParameters {
 
     public List<String> getSandboxNames() {
         return new ArrayList<>(this.sandboxNames);
+    }
+
+    public PlatformInstanceEnum getPlatformInstance() {
+        return platformInstance;
     }
 }

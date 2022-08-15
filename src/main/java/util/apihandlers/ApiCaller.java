@@ -22,13 +22,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ApiCaller {
-    private static final String URL_BASE = "api.veracode.com";
+    private static final String APIS_BASE_URL = "api.veracode.";
     private static final String APPLICATIONS_API_URL = "/appsec/v1/applications/";
     private static final String SANDBOX_API_URL_SUFFIX = "/sandboxes";
     private static final String GET_REQUEST = "GET";
     private static final String POST_REQUEST = "POST";
+    private static String instanceUrl;
 
     public static void handleApiCalls(ExecutionParameters executionParameters) {
+        instanceUrl = APIS_BASE_URL + executionParameters.getPlatformInstance().getTopLevelDomain();
         if (executionParameters instanceof CreateForAllApplicationsExecutionParameters) {
             createForAllApps((CreateForAllApplicationsExecutionParameters) executionParameters);
         } else if (executionParameters instanceof CreateForNewApplicationExecutionParameters) {
@@ -139,11 +141,11 @@ public class ApiCaller {
     }
 
     private static void createSandboxes(ApiCredentials apiCredentials, String applicationProfileGuid, List<String> sandboxNames) {
-        Logger.log("Starting to create Sandboxes for application " + applicationProfileGuid);
+        Logger.log("  Starting to create Sandboxes for application " + applicationProfileGuid);
         sandboxNames.forEach(sandboxName ->
                 runApi(APPLICATIONS_API_URL + applicationProfileGuid + SANDBOX_API_URL_SUFFIX, POST_REQUEST,
                         buildNewSandboxJsonOutput(sandboxName), apiCredentials));
-        Logger.log("Finished creating Sandboxes for application " + applicationProfileGuid);
+        Logger.log("  Finished creating Sandboxes for application " + applicationProfileGuid);
     }
 
     private static String buildNewSandboxJsonOutput(String sandboxName) {
@@ -163,7 +165,7 @@ public class ApiCaller {
     private static Optional<JSONObject> runApi(String apiUrl, String requestType,
                                                String jsonParameters, ApiCredentials apiCredentials) {
         try {
-            final URL applicationsApiUrl = new URL("https://" + URL_BASE + apiUrl);
+            final URL applicationsApiUrl = new URL("https://" + instanceUrl + apiUrl);
             final String authorizationHeader =
                     HmacRequestSigner.getVeracodeAuthorizationHeader(apiCredentials, applicationsApiUrl, requestType);
 
